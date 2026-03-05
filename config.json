@@ -1,0 +1,42 @@
+{
+  "siteStatus": "live",
+  "siteName": "RALF1Q Leaderboard",
+
+  "announcement": {
+    "enabled": true,
+    "text": "🔥 500T Skinrave Leaderboard Live Now!",
+    "link": "https://skinrave.gg/en?r=ralf1q"
+  },
+
+  "season": "summer",
+
+  "countdownEnd": "2026-03-05T17:10:00Z",
+
+  "discordServerId": "1472980727783227440",
+
+  "api": {
+    "endpoint": "https://api.skinrave.gg/affiliates/public/applicants",
+    "token": "621d3329-6399-4211-bbe3-7a751cfdf45a",
+    "take": 30,
+    "order": "DESC",
+    "rangeDays": 26,
+
+    "proxyBase": "https://mute-tooth-b9c3.ralf1nsh2025.workers.dev",
+    "useSSE": true
+  },
+
+  "prizes": [
+    { "rank": 1, "amount": 250 },
+    { "rank": 2, "amount": 125 },
+    { "rank": 3, "amount": 55 },
+    { "rank": 4, "amount": 10 },
+    { "rank": 5, "amount": 10 },
+    { "rank": 6, "amount": 10 },
+    { "rank": 7, "amount": 10 },
+    { "rank": 8, "amount": 10 },
+    { "rank": 9, "amount": 10 },
+    { "rank": 10, "amount": 10 }
+  ],
+
+  "adminPassword": "ralf1q"
+}

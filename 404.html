@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>404 • Page Not Found</title>
+
+<link rel="stylesheet" href="/assets/css/style.css">
+
+<!-- favicon -->
+<link rel="icon" href="/assets/images/logo.png">
+
+</head>
+
+<body>
+
+<script type="module">
+import { enforceSiteStatus } from "/assets/js/siteStatus.js"
+enforceSiteStatus()
+</script>
+
+<div class="bg-vignette"></div>
+<canvas id="fxCanvas"></canvas>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+<div class="container navbar-inner">
+
+<div class="brand">
+
+<div class="brand-badge brand-badge--img">
+<img src="/assets/images/logo.png">
+</div>
+
+<div>
+<div id="siteName">RALF1Q Rewards</div>
+<div class="small">Page not found</div>
+</div>
+
+</div>
+
+<div class="navlinks">
+<a class="nav-pill" href="/">Home</a>
+<a class="nav-pill" href="/leaderboard/">Leaderboard</a>
+</div>
+
+</div>
+</div>
+
+
+
+<!-- PAGE -->
+
+<div class="container center-page">
+
+<div class="status-card">
+
+<div class="status-emoji float">🚫</div>
+
+<h1 style="font-size:70px;margin:0">404</h1>
+
+<h2 class="status-title">Page Not Found</h2>
+
+<div class="status-sub">
+The page you are looking for does not exist or was moved.
+</div>
+
+
+<div style="display:flex;justify-content:center;margin-top:20px">
+
+<a href="/">
+<button class="btn-gold">
+Go Back Home →
+</button>
+</a>
+
+</div>
+
+<div style="display:flex;justify-content:center;margin-top:20px">
+
+<a class="discord-circle"
+href="https://discord.gg/QFcvckkK52"
+target="_blank">
+
+<img src="/assets/images/discord.png">
+
+</a>
+
+</div>
+
+<div class="copy" style="margin-top:18px">
+© 2026. All rights reserved.
+</div>
+
+</div>
+
+</div>
+
+
+
+<script type="module">
+
+import { loadConfig } from "/assets/js/config.js"
+import { setupFxCanvas } from "/assets/js/effects.js"
+
+const fx = setupFxCanvas()
+
+loadConfig().then(cfg=>{
+fx.setMode(cfg.season || "winter")
+})
+
+</script>
+
+<style>
+
+.center-page{
+min-height:calc(100vh - 60px);
+display:grid;
+place-items:center;
+padding:24px 0;
+}
+
+.status-card{
+width:min(900px,94vw);
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.08);
+border-radius:18px;
+padding:30px 24px;
+text-align:center;
+box-shadow:0 22px 70px rgba(0,0,0,.55);
+backdrop-filter:blur(8px);
+}
+
+.status-title{
+font-size:42px;
+margin-top:8px;
+}
+
+.status-sub{
+color:rgba(255,255,255,.70);
+margin-top:8px;
+}
+
+.status-emoji{
+font-size:56px;
+}
+
+.float{
+animation:floaty 3s ease-in-out infinite;
+}
+
+@keyframes floaty{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+}
+
+</style>
+
+</body>
+</html>

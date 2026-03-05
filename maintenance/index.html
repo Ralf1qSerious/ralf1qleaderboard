@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Maintenance</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" href="/assets/images/logo.png">
+</head>
+<body>
+  <script type="module">
+    import { enforceSiteStatus } from "/assets/js/siteStatus.js";
+    enforceSiteStatus();
+  </script>
+
+  <div class="bg-vignette"></div>
+  <canvas id="fxCanvas"></canvas>
+
+  <div class="container center-page">
+    <div class="status-card">
+      <div class="status-emoji float">🛠️</div>
+
+      <h2 class="status-title">Maintenance</h2>
+      <div class="status-sub">We’re updating the leaderboard and syncing new results.</div>
+
+      <div style="
+        margin:18px auto 0;
+        width:min(520px,100%);
+        padding:14px 14px;
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,.12);
+        background:rgba(0,0,0,.25);
+        color:rgba(255,255,255,.75);
+        font-weight:700;
+      ">
+        Status: <span id="statusLine" style="color:var(--gold)">Applying updates…</span>
+      </div>
+
+      <!-- centered button -->
+      <div style="display:flex;justify-content:center;margin-top:18px">
+        <a href="https://skinrave.gg/en?r=ralf1q" target="_blank" rel="noopener">
+          <button class="btn-gold">Play on Skinrave →</button>
+        </a>
+      </div>
+
+      <!-- discord a bit down -->
+      <div style="display:flex;justify-content:center;margin-top:20px">
+        <a class="discord-circle" href="https://discord.gg/QFcvckkK52" target="_blank" rel="noopener" style="text-decoration:none">
+          <img src="/assets/images/discord.png" alt="discord">
+        </a>
+      </div>
+
+      <div class="copy" style="margin-top:16px">© 2026. All rights reserved.</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { loadConfig } from "/assets/js/config.js";
+    import { setupFxCanvas } from "/assets/js/effects.js";
+
+    const fx = setupFxCanvas();
+
+    loadConfig().then(cfg => {
+      fx.setMode(cfg.season || "winter");
+    });
+
+    const lines = ["Applying updates…", "Syncing leaderboard…", "Almost done…"];
+    let i = 0;
+    setInterval(() => {
+      const el = document.getElementById("statusLine");
+      if (!el) return;
+      i = (i + 1) % lines.length;
+      el.textContent = lines[i];
+    }, 1400);
+  </script>
+
+  <style>
+    .center-page{ min-height: calc(100vh - 60px); display:grid; place-items:center; padding: 24px 0; }
+    .status-card{
+      width:min(980px,94vw);
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:28px 22px 26px;
+      text-align:center;
+      box-shadow: 0 22px 70px rgba(0,0,0,.55);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(8px);
+    }
+    .status-emoji{ font-size:64px; line-height:1; }
+    .status-title{ font-size:46px; margin:10px 0 6px; letter-spacing:-.8px; }
+    .status-sub{ color:rgba(255,255,255,.70); }
+    .float{ animation: floaty 2.8s ease-in-out infinite; }
+    @keyframes floaty{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-8px);} }
+  </style>
+</body>
+</html>

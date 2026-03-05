@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <div class="bg-vignette"></div>
+  <canvas id="fxCanvas"></canvas>
+
+  <div class="container" style="padding:30px 24px 60px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-size:36px">Config Editor</h2>
+        <div class="muted">Edit config.json and download the updated file.</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <a href="/leaderboard/"><button style="background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.12)">Leaderboard</button></a>
+        <button id="logoutBtn" style="background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.12)">Logout</button>
+        <button id="downloadBtn">Download config.json</button>
+      </div>
+    </div>
+
+    <textarea id="editor"
+      style="width:100%;height:520px;margin-top:16px;border-radius:18px;padding:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.35);color:#fff;outline:none;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+      font-size:13px;line-height:1.5"></textarea>
+
+    <div id="panelMsg" class="muted" style="margin-top:10px"></div>
+  </div>
+
+  <script type="module" src="/assets/js/admin.js"></script>
+</body>
+</html>
