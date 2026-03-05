@@ -1,14 +1,14 @@
 {
-  "siteStatus": "maintenance",
+  "siteStatus": "live",
   "siteName": "RALF1Q Leaderboard",
 
   "announcement": {
     "enabled": true,
-    "text": "🔥 500T Skinrave Leaderboard Live Now!",
+    "text": "🍃 Spring update is live now! 🔥 500T Leaderboard is currently up!",
     "link": "https://skinrave.gg/en?r=ralf1q"
   },
 
-  "season": "summer",
+  "season": "spring",
 
   "countdownEnd": "2026-04-01T00:00:00Z",
 
@@ -41,4 +41,5 @@
   "adminPassword": "ralf1q"
 
 }
+
 
