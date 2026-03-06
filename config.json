@@ -19,8 +19,7 @@
     "token": "621d3329-6399-4211-bbe3-7a751cfdf45a",
     "take": 30,
     "order": "DESC",
-    "rangeDays": 26,
-
+    "rangeDays": 7,
     "proxyBase": "https://mute-tooth-b9c3.ralf1nsh2025.workers.dev",
     "useSSE": true
   },
@@ -38,10 +37,36 @@
     { "rank": 10, "amount": 10 }
   ],
 
+"caseWidget": {
+  "enabled": true,
+  "rotateMs": 4000,
+  "cases": [
+    {
+      "badge": "HOT CASE",
+      "badgeColor": {
+        "text": "#7ef3b8",
+        "bg": "rgba(62,210,135,.14)",
+        "border": "rgba(62,210,135,.20)"
+      },
+      "title": "5% M4A1 V1",
+      "price": "1.01",
+      "image": "/assets/images/case-5m4a1v1.png",
+      "url": "https://skinrave.gg/en/cs2/case-opening/5-m4a1-v1"
+    },
+    {
+      "badge": "NEW",
+      "badgeColor": {
+        "text": "#ffe38a",
+        "bg": "rgba(214,168,44,.14)",
+        "border": "rgba(214,168,44,.24)"
+      },
+      "title": "XCB",
+      "price": "12.28",
+      "image": "/assets/images/case-xcb.png",
+      "url": "https://skinrave.gg/en/cs2/case-opening/xcb"
+    }
+  ]
+},
+
   "adminPassword": "ralf1q"
-
 }
-
-
-
-
