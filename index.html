@@ -4,14 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ralf1q</title>
-
-  <link rel="icon" href="/assets/images/logo.png">
-  <!-- Use absolute paths (best for Cloudflare + Live Server from project root) -->
   <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" href="/assets/images/logo.png">
 </head>
 
 <body>
-  <!-- site status redirect (live / maintenance / launchingsoon) -->
   <script type="module">
     import { enforceSiteStatus } from "/assets/js/siteStatus.js";
     enforceSiteStatus();
@@ -20,14 +17,11 @@
   <div class="bg-vignette"></div>
   <canvas id="fxCanvas"></canvas>
 
-  <!-- Announcement bar (config-driven, supports link) -->
   <div id="announcement" class="announcement"></div>
 
-  <!-- NAVBAR -->
   <div class="navbar">
     <div class="container navbar-inner">
       <div class="brand">
-        <!-- Logo badge -->
         <div class="brand-badge brand-badge--img">
           <img src="/assets/images/logo.png" alt="RALF1Q logo">
         </div>
@@ -45,7 +39,6 @@
     </div>
   </div>
 
-  <!-- HERO -->
   <div class="container hero">
     <h1>Skinrave Affiliate Leaderboard</h1>
     <p>Live standings and prizes.</p>
@@ -58,10 +51,8 @@
       </a>
     </div>
 
-    <!-- Prize Card -->
     <div class="home-grid">
       <div class="prize-card">
-        <!-- floating token particles behind the card -->
         <canvas class="token-canvas" id="tokenCanvas"></canvas>
 
         <div class="prize-card-inner">
@@ -78,7 +69,7 @@
 
           <div class="you-get">
             <div class="you-get-title">YOU GET</div>
-            <div class="you-get-text">Free Battles &amp; promocodes</div>
+            <div class="you-get-text">Daily: free battles &amp; promocodes</div>
           </div>
 
           <div class="prize-actions">
@@ -95,45 +86,67 @@
     </div>
   </div>
 
-<!-- FOOTER (with disclaimer) -->
-<div class="footer-block">
-  <div class="footer-title"><span class="warn">⚠️</span> Gamble Smart</div>
+  <div class="footer-block">
+    <div class="footer-title"><span class="warn">⚠️</span> Gamble Smart</div>
 
-  <div class="footer-text">
-    You must be 18 years or older to participate. Please play responsibly.
-    If you or someone you know is struggling with gambling addiction, visit
-    <a href="https://www.gambleaware.org/" target="_blank" rel="noopener">BeGambleAware.org</a>
+    <div class="footer-text">
+      You must be 18 years or older to participate. Please play responsibly.
+      If you or someone you know is struggling with gambling addiction, visit
+      <a href="https://www.gambleaware.org/" target="_blank" rel="noopener">BeGambleAware.org</a>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <div class="footer-title" style="margin-top:2px">Disclaimer</div>
+    <div class="footer-text" style="color:rgba(214,168,44,.90);font-weight:800">
+      We are not liable for any losses that may arise from gambling activities on the casinos and betting
+      platforms featured on our website. All gambling is done at your own risk, and you are fully responsible
+      for your decisions.
+    </div>
   </div>
 
-  <div class="footer-divider"></div>
+  <div class="follow-connect">
+    <h3>Follow &amp; Connect</h3>
 
-  <div class="footer-title" style="margin-top:2px">Disclaimer</div>
-  <div class="footer-text" style="color:rgba(214,168,44,.90);font-weight:800">
-    We are not liable for any losses that may arise from gambling activities on the casinos and betting
-    platforms featured on our website. All gambling is done at your own risk, and you are fully responsible
-    for your decisions.
+    <a class="discord-circle" href="https://discord.com/invite/QFcvckkK52" target="_blank" rel="noopener">
+      <img src="/assets/images/discord.png" alt="discord">
+    </a>
+
+    <div class="copy">© 2026. All rights reserved.</div>
   </div>
-</div>
 
-<div class="follow-connect">
-  <h3>Follow &amp; Connect</h3>
-
-  <a class="discord-circle" href="https://discord.gg/QFcvckkK52" target="_blank" rel="noopener">
-    <img src="/assets/images/discord.png" alt="discord">
-  </a>
-
-  <div class="copy">© 2026. All rights reserved.</div>
-</div>
-
-  <!-- Home logic (announcement + seasonal mode) -->
   <script type="module" src="/assets/js/home.js"></script>
 
-  <!-- Token particles behind prize card -->
   <script type="module">
     import { startTokenParticles } from "/assets/js/tokenParticles.js";
     startTokenParticles("tokenCanvas", "/assets/images/token.png");
   </script>
+
+  <script type="module">
+    import { initCaseWidget } from "/assets/js/caseWidget.js";
+    import { loadConfig } from "/assets/js/config.js";
+
+    loadConfig().then(cfg => {
+      if (!cfg.caseWidget || cfg.caseWidget.enabled !== false) {
+        initCaseWidget({
+          rotateMs: cfg.caseWidget?.rotateMs || 4000,
+          cases: cfg.caseWidget?.cases || [
+            {
+              title: "5% M4A1 V1",
+              price: "1.01",
+              image: "/assets/images/case-5m4a1v1.png",
+              url: "https://skinrave.gg/en/cs2/case-opening/5-m4a1-v1"
+            },
+            {
+              title: "XCB",
+              price: "12.28",
+              image: "/assets/images/case-xcb.png",
+              url: "https://skinrave.gg/en/cs2/case-opening/xcb"
+            }
+          ]
+        });
+      }
+    });
+  </script>
 </body>
-
 </html>
-
