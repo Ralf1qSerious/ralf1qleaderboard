@@ -19,7 +19,7 @@
     "token": "621d3329-6399-4211-bbe3-7a751cfdf45a",
     "take": 30,
     "order": "DESC",
-    "rangeDays": 7,
+    "rangeDays": 30,
     "proxyBase": "https://mute-tooth-b9c3.ralf1nsh2025.workers.dev",
     "useSSE": true
   },
@@ -70,3 +70,4 @@
 
   "adminPassword": "ralf1q"
 }
+
