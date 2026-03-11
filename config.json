@@ -1,5 +1,5 @@
 {
-  "siteStatus": "live",
+  "siteStatus": "maintenace",
   "siteName": "RALF1Q Leaderboard",
 
   "announcement": {
@@ -70,4 +70,5 @@
 
   "adminPassword": "ralf1q"
 }
+
 
