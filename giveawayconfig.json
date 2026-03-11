@@ -4,7 +4,7 @@
   "infoLine": "To join, send the entry fee to the Skinrave ID below and message ralf1q on Discord for manual confirmation.",
   "endDate": "2026-03-17T20:00:00Z",
 
-  "entryFee": 10,
+  "entryFee": 5,
   "winnerCount": 4,
   "prizePerWinner": 50,
 
@@ -15,4 +15,5 @@
   "entries": [
 
   ]
+
 }
