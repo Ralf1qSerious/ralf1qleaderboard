@@ -1,0 +1,18 @@
+{
+  "title": "4 Winners • 50 Tokens Each",
+  "subtitle": "Enter now for a chance to win one of four 50 token prizes.",
+  "infoLine": "To join, send the entry fee to the Skinrave ID below and message ralf1q on Discord for manual confirmation.",
+  "endDate": "2026-03-17T20:00:00Z",
+
+  "entryFee": 10,
+  "winnerCount": 4,
+  "prizePerWinner": 50,
+
+  "skinraveId": "827383",
+  "discordUsername": "ralf1q",
+  "discordLink": "https://discord.gg/Z79HtHpPuK",
+
+  "entries": [
+
+  ]
+}
