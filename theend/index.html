@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The End</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" href="/assets/images/logo.png">
+</head>
+<body>
+  <script type="module">
+    import { enforceSiteStatus } from "/assets/js/siteStatus.js";
+    enforceSiteStatus();
+  </script>
+
+  <div class="bg-vignette"></div>
+  <canvas id="fxCanvas"></canvas>
+  <canvas id="goldParticles"></canvas>
+
+  <div class="navbar">
+    <div class="container navbar-inner">
+      <div class="brand">
+        <div class="brand-badge brand-badge--img">
+          <img src="/assets/images/logo.png" alt="RALF1Q logo">
+        </div>
+        <div>
+          <div id="siteName">RALF1Q Leaderboard End</div>
+          <div class="small">The End</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container end-page-wrap">
+    <section class="end-card">
+      <div class="end-icon">🥀</div>
+
+      <div class="end-kicker">FAREWELL</div>
+
+      <h1 class="end-title">The RALF1Q Leaderboard Era Has Ended</h1>
+
+      <p class="end-subtitle">
+        Thank you to everyone who joined, competed, and supported the leaderboard.
+        This competitive chapter has now come to a close.
+      </p>
+
+      <div class="end-message-box">
+        <div class="end-message-title">What Happens Next</div>
+
+        <div class="end-message-text">
+          The leaderboard season is now officially closed.
+          <br><br>
+          The <b>top 3 leaderboard members will be paid out after 7 days</b>.
+          This waiting period allows you to do the last wager.
+          <br><br>
+          Even though the leaderboard has ended, there may still be:
+          <ul class="end-list">
+            <li>Sponsored battles</li>
+            <li>Promo code drops</li>
+            <li>Community rewards</li>
+          </ul>
+          So keep an eye out — some events may still happen.
+        </div>
+      </div>
+
+      <div class="end-countdown-wrap">
+        <div class="end-countdown-title">Top 3 Payout Countdown</div>
+
+        <div class="countdown">
+          <div class="time-box">
+            <div class="n" id="days">--</div>
+            <div class="l">DAYS</div>
+          </div>
+          <div class="time-box">
+            <div class="n" id="hours">--</div>
+            <div class="l">HRS</div>
+          </div>
+          <div class="time-box">
+            <div class="n" id="minutes">--</div>
+            <div class="l">MIN</div>
+          </div>
+          <div class="time-box">
+            <div class="n" id="seconds">--</div>
+            <div class="l">SEC</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="final-podium-wrap">
+        <div class="final-podium-title">Final Leaderboard Top 3</div>
+
+        <div class="final-podium" id="finalPodium">
+          <div class="podium-player second podium-loading">
+            <div class="podium-rank">2</div>
+            <div class="podium-avatar-wrap">
+              <img class="podium-avatar" src="/assets/images/logo.png" alt="player avatar">
+            </div>
+            <div class="podium-name">Loading...</div>
+            <div class="podium-prize">
+              <img src="/assets/images/token.png" alt="token">
+              <span>0.00</span>
+            </div>
+          </div>
+
+          <div class="podium-player first podium-loading">
+            <div class="podium-rank">1</div>
+            <div class="podium-avatar-wrap">
+              <img class="podium-avatar" src="/assets/images/logo.png" alt="player avatar">
+            </div>
+            <div class="podium-name">Loading...</div>
+            <div class="podium-prize">
+              <img src="/assets/images/token.png" alt="token">
+              <span>0.00</span>
+            </div>
+          </div>
+
+          <div class="podium-player third podium-loading">
+            <div class="podium-rank">3</div>
+            <div class="podium-avatar-wrap">
+              <img class="podium-avatar" src="/assets/images/logo.png" alt="player avatar">
+            </div>
+            <div class="podium-name">Loading...</div>
+            <div class="podium-prize">
+              <img src="/assets/images/token.png" alt="token">
+              <span>0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="podium-note" id="podiumNote">
+          Final standings are being loaded...
+        </div>
+      </div>
+
+      <div class="end-divider"></div>
+
+      <div class="end-quote">
+        “Thanks to everyone who participated and supported the run.”
+      </div>
+
+      <div class="end-actions">
+        <a href="https://skinrave.gg/en" target="_blank" rel="noopener">
+          <button class="btn-gold">Visit Skinrave →</button>
+        </a>
+      </div>
+
+      <div class="end-discord-wrap">
+        <a class="discord-circle" href="https://discord.com/invite/QFcvckkK52" target="_blank" rel="noopener">
+          <img src="/assets/images/discord.png" alt="discord">
+        </a>
+      </div>
+
+      <div class="copy end-copy">
+        © 2026 • Thank you for being part of the journey
+      </div>
+    </section>
+  </div>
+
+  <script type="module">
+    import { loadConfig } from "/assets/js/config.js";
+    import { setupFxCanvas } from "/assets/js/effects.js";
+
+    const fx = setupFxCanvas();
+
+    const FALLBACK_PLAYERS = [
+      { rank: 2, name: "Top 2", avatar: "/assets/images/logo.png", prize: 125 },
+      { rank: 1, name: "Top 1", avatar: "/assets/images/logo.png", prize: 250 },
+      { rank: 3, name: "Top 3", avatar: "/assets/images/logo.png", prize: 55 }
+    ];
+
+    function computeRange(rangeDays) {
+      const to = new Date();
+      const from = new Date(to.getTime() - (rangeDays || 7) * 24 * 60 * 60 * 1000);
+      return { from: from.toISOString(), to: to.toISOString() };
+    }
+
+    function buildProxyUrl(cfg) {
+      const { from, to } = computeRange(cfg.api?.rangeDays || 7);
+      const qs = new URLSearchParams({
+        token: cfg.api?.token || "",
+        skip: "0",
+        take: "3",
+        order: cfg.api?.order || "DESC",
+        from,
+        to
+      });
+      return `${cfg.api?.proxyBase}/api/leaderboard?${qs.toString()}`;
+    }
+
+    function normalizePlayers(apiJson, cfg) {
+      const list = apiJson?.list || apiJson?.items || [];
+      const prizes = cfg.prizes || [];
+
+      return list.slice(0, 3).map((row, i) => {
+        const rank = i + 1;
+        const prize = prizes.find(p => Number(p.rank) === rank)?.amount || 0;
+
+        return {
+          rank,
+          name: row?.user?.username ?? row?.username ?? `Top ${rank}`,
+          avatar: row?.user?.avatarUrl ?? row?.avatarUrl ?? "/assets/images/logo.png",
+          prize
+        };
+      });
+    }
+
+    function animateNumber(el, endValue, duration = 1600) {
+      const start = performance.now();
+      const end = Number(endValue) || 0;
+
+      function frame(now) {
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = end * eased;
+        el.textContent = value.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+
+        if (progress < 1) requestAnimationFrame(frame);
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    function renderPodium(players) {
+      const wrap = document.getElementById("finalPodium");
+      const note = document.getElementById("podiumNote");
+      if (!wrap) return;
+
+      const displayOrder = [
+        players.find(p => p.rank === 2),
+        players.find(p => p.rank === 1),
+        players.find(p => p.rank === 3)
+      ].filter(Boolean);
+
+      wrap.innerHTML = displayOrder.map(player => `
+        <div class="podium-player ${player.rank === 1 ? "first" : player.rank === 2 ? "second" : "third"}">
+          <div class="podium-rank">${player.rank}</div>
+
+          <div class="podium-avatar-wrap">
+            <div class="podium-gold-ring"></div>
+            <img class="podium-avatar" src="${player.avatar}" alt="${player.name}">
+          </div>
+
+          <div class="podium-name">${escapeHtml(player.name)}</div>
+
+          <div class="podium-prize">
+            <img src="/assets/images/token.png" alt="token">
+            <span class="podium-prize-number" data-value="${player.prize}">0.00</span>
+          </div>
+        </div>
+      `).join("");
+
+      wrap.querySelectorAll(".podium-prize-number").forEach(el => {
+        animateNumber(el, el.dataset.value, 1800);
+      });
+
+      if (note) {
+        note.textContent = "Final top 3 pulled automatically from the leaderboard standings.";
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    async function loadTop3(cfg) {
+      const note = document.getElementById("podiumNote");
+
+      if (!cfg.api?.proxyBase || !cfg.api?.token) {
+        renderPodium(FALLBACK_PLAYERS);
+        if (note) note.textContent = "Proxy/token missing in config.json, showing fallback top 3.";
+        return;
+      }
+
+      try {
+        const res = await fetch(buildProxyUrl(cfg), { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+
+        const players = normalizePlayers(json, cfg);
+
+        if (!players.length) {
+          renderPodium(FALLBACK_PLAYERS);
+          if (note) note.textContent = "No live standings found, showing fallback top 3.";
+          return;
+        }
+
+        renderPodium(players);
+      } catch (err) {
+        renderPodium(FALLBACK_PLAYERS);
+        if (note) note.textContent = "Could not load live top 3, showing fallback top 3.";
+        console.error(err);
+      }
+    }
+
+    function initPersistentCountdown() {
+      let payoutDate = localStorage.getItem("leaderboardPayoutDate");
+
+      if (!payoutDate) {
+        const date = new Date();
+        date.setDate(date.getDate() + 7);
+        payoutDate = String(date.getTime());
+        localStorage.setItem("leaderboardPayoutDate", payoutDate);
+      }
+
+      payoutDate = Number(payoutDate);
+
+      function updateCountdown() {
+        const now = Date.now();
+        const diff = payoutDate - now;
+
+        const set = (id, value) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = value;
+        };
+
+        if (diff <= 0) {
+          set("days", "0");
+          set("hours", "0");
+          set("minutes", "0");
+          set("seconds", "0");
+          return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+
+        set("days", d);
+        set("hours", h);
+        set("minutes", m);
+        set("seconds", s);
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+
+    function initGoldParticles() {
+      const canvas = document.getElementById("goldParticles");
+      const ctx = canvas.getContext("2d");
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      resize();
+      window.addEventListener("resize", resize);
+
+      const particles = Array.from({ length: 80 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        speed: 0.4 + Math.random() * 1.1,
+        size: 1 + Math.random() * 2.2,
+        alpha: 0.25 + Math.random() * 0.45,
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(214,168,44,${p.alpha})`;
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          p.y += p.speed;
+          if (p.y > canvas.height + 10) {
+            p.y = -10;
+            p.x = Math.random() * canvas.width;
+          }
+        });
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+
+    function initFloatingNames() {
+      const names = ["Leaderboard", "Top 3", "Farewell", "RALF1Q", "Thanks"];
+      names.forEach((name, i) => {
+        const el = document.createElement("div");
+        el.className = "floating-name";
+        el.textContent = name;
+        el.style.left = (10 + Math.random() * 75) + "%";
+        el.style.animationDelay = (i * 2.5) + "s";
+        document.body.appendChild(el);
+      });
+    }
+
+    loadConfig().then(cfg => {
+      const siteName = document.getElementById("siteName");
+      if (siteName) siteName.textContent = cfg.siteName || "RALF1Q Rewards";
+
+      fx.setMode(cfg.season || "winter");
+      initPersistentCountdown();
+      initGoldParticles();
+      initFloatingNames();
+      loadTop3(cfg);
+    });
+  </script>
+
+  <style>
+    #goldParticles{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .end-page-wrap{
+      padding-top:50px;
+      padding-bottom:50px;
+      display:grid;
+      place-items:center;
+    }
+
+    .end-card{
+      width:min(920px,94vw);
+      padding:36px 30px;
+      text-align:center;
+      border-radius:24px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(214,168,44,.12), transparent 30%),
+        linear-gradient(135deg, rgba(24,20,14,.96), rgba(16,16,20,.98));
+      border:1px solid rgba(214,168,44,.14);
+      box-shadow:0 24px 70px rgba(0,0,0,.45);
+      position:relative;
+      z-index:1;
+      overflow:hidden;
+    }
+
+    .end-card::before{
+      content:"";
+      position:absolute;
+      inset:-120px -100px;
+      background:
+        radial-gradient(circle at 22% 18%, rgba(214,168,44,.10), transparent 22%),
+        radial-gradient(circle at 80% 22%, rgba(255,255,255,.04), transparent 18%);
+      pointer-events:none;
+    }
+
+    .end-icon{
+      font-size:40px;
+      margin-bottom:12px;
+      animation:float 3s ease-in-out infinite;
+      position:relative;
+      z-index:1;
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+    }
+
+    .end-kicker{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(214,168,44,.14);
+      border:1px solid rgba(214,168,44,.20);
+      color:#e0bf73;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.6px;
+      position:relative;
+      z-index:1;
+    }
+
+    .end-title{
+      font-size:42px;
+      margin:18px 0 10px;
+      color:white;
+      position:relative;
+      z-index:1;
+    }
+
+    .end-subtitle{
+      color:rgba(255,255,255,.75);
+      font-size:16px;
+      max-width:680px;
+      margin:auto;
+      position:relative;
+      z-index:1;
+    }
+
+    .end-message-box{
+      margin-top:24px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      padding:20px;
+      border-radius:18px;
+      text-align:left;
+      position:relative;
+      z-index:1;
+    }
+
+    .end-message-title{
+      color:#e0bf73;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .end-list{
+      margin-top:10px;
+      padding-left:18px;
+    }
+
+    .end-countdown-wrap{
+      margin-top:28px;
+      position:relative;
+      z-index:1;
+    }
+
+    .end-countdown-title{
+      color:#e0bf73;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .final-podium-wrap{
+      margin-top:38px;
+      position:relative;
+      z-index:1;
+    }
+
+    .final-podium-title{
+      color:#e0bf73;
+      font-weight:1000;
+      font-size:22px;
+      margin-bottom:18px;
+      letter-spacing:.4px;
+    }
+
+    .final-podium{
+      display:flex;
+      justify-content:center;
+      align-items:flex-end;
+      gap:26px;
+      flex-wrap:wrap;
+    }
+
+    .podium-player{
+      width:180px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      opacity:0;
+      transform:translateY(30px);
+      animation: podiumAppear 0.9s ease forwards, podiumFadeUp 11s ease forwards;
+      position:relative;
+    }
+
+    .podium-player.first{
+      order:2;
+      animation-delay: .2s, 4.5s;
+    }
+
+    .podium-player.second{
+      order:1;
+      animation-delay: .5s, 5s;
+    }
+
+    .podium-player.third{
+      order:3;
+      animation-delay: .8s, 5.5s;
+    }
+
+    @keyframes podiumAppear{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @keyframes podiumFadeUp{
+      0%{
+        opacity:1;
+        transform:translateY(0);
+      }
+      70%{
+        opacity:1;
+        transform:translateY(0);
+      }
+      100%{
+        opacity:0;
+        transform:translateY(-90px);
+      }
+    }
+
+    .podium-rank{
+      width:56px;
+      height:56px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      font-weight:1000;
+      font-size:22px;
+      background:linear-gradient(180deg,#ffd97a,#cfa233);
+      color:#111;
+      box-shadow:0 0 22px rgba(214,168,44,.45);
+      margin-bottom:12px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .podium-rank::after{
+      content:"";
+      position:absolute;
+      top:-40%;
+      left:-70%;
+      width:45%;
+      height:180%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+      transform:rotate(18deg);
+      animation: shimmerSweep 2.8s linear infinite;
+    }
+
+    @keyframes shimmerSweep{
+      0%{ left:-70%; }
+      100%{ left:130%; }
+    }
+
+    .podium-avatar-wrap{
+      position:relative;
+      width:92px;
+      height:92px;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .podium-gold-ring{
+      position:absolute;
+      inset:-6px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(214,168,44,.22), rgba(214,168,44,.04), transparent 72%);
+      animation: ringPulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes ringPulse{
+      0%,100%{ transform:scale(1); opacity:.65; }
+      50%{ transform:scale(1.08); opacity:1; }
+    }
+
+    .podium-avatar{
+      width:92px;
+      height:92px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid rgba(214,168,44,.34);
+      box-shadow:0 12px 28px rgba(0,0,0,.30);
+      position:relative;
+      z-index:1;
+      background:#111;
+    }
+
+    .podium-name{
+      font-size:18px;
+      font-weight:1000;
+      color:white;
+      text-shadow:0 0 18px rgba(214,168,44,.22);
+      margin-bottom:10px;
+      max-width:170px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .podium-prize{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(214,168,44,.14);
+      color:#fff;
+      font-weight:1000;
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
+    }
+
+    .podium-prize img{
+      width:16px;
+      height:16px;
+      object-fit:contain;
+    }
+
+    .podium-prize-number{
+      background:linear-gradient(90deg,#ffd97a,#fff2b3,#ffd97a);
+      background-size:200% 100%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation: prizeShimmer 2.4s linear infinite;
+    }
+
+    @keyframes prizeShimmer{
+      0%{ background-position:0% 0; }
+      100%{ background-position:200% 0; }
+    }
+
+    .podium-note{
+      margin-top:14px;
+      color:rgba(255,255,255,.60);
+      font-size:13px;
+    }
+
+    .podium-loading{
+      opacity:1;
+      animation:none;
+    }
+
+    .end-divider{
+      margin:30px auto 26px;
+      height:1px;
+      width:60%;
+      background:linear-gradient(90deg,transparent,#e0bf73,transparent);
+      position:relative;
+      z-index:1;
+    }
+
+    .end-quote{
+      font-style:italic;
+      color:rgba(255,255,255,.85);
+      position:relative;
+      z-index:1;
+    }
+
+    .end-actions{
+      margin-top:20px;
+      position:relative;
+      z-index:1;
+    }
+
+    .end-discord-wrap{
+      margin-top:20px;
+      display:flex;
+      justify-content:center;
+      position:relative;
+      z-index:1;
+    }
+
+    .end-copy{
+      margin-top:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .floating-name{
+      position:fixed;
+      bottom:-40px;
+      font-size:14px;
+      color:rgba(255,255,255,.08);
+      animation:floatUp 14s linear infinite;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    @keyframes floatUp{
+      0%{ transform:translateY(0); opacity:0; }
+      10%{ opacity:1; }
+      100%{ transform:translateY(-120vh); opacity:0; }
+    }
+
+    @media (max-width:760px){
+      .end-card{
+        padding:28px 18px;
+      }
+
+      .end-title{
+        font-size:34px;
+      }
+
+      .final-podium{
+        gap:18px;
+      }
+
+      .podium-player{
+        width:150px;
+      }
+
+      .podium-avatar,
+      .podium-avatar-wrap{
+        width:80px;
+        height:80px;
+      }
+    }
+  </style>
+</body>
+</html>
