@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>The End</title>
+
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" href="/assets/images/logo.png">
 </head>
@@ -24,7 +25,7 @@
           <img src="/assets/images/logo.png" alt="RALF1Q logo">
         </div>
         <div>
-          <div id="siteName">RALF1Q Leaderboard End</div>
+          <div id="siteName">RALF1Q Rewards</div>
           <div class="small">The End</div>
         </div>
       </div>
@@ -83,6 +84,10 @@
             <div class="n" id="seconds">--</div>
             <div class="l">SEC</div>
           </div>
+        </div>
+
+        <div class="end-countdown-note" id="countdownNote">
+          Countdown is synced to the same payout date for everyone.
         </div>
       </div>
 
@@ -212,6 +217,7 @@
         const progress = Math.min(1, (now - start) / duration);
         const eased = 1 - Math.pow(1 - progress, 3);
         const value = end * eased;
+
         el.textContent = value.toLocaleString("en-US", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
@@ -221,6 +227,15 @@
       }
 
       requestAnimationFrame(frame);
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
     function renderPodium(players) {
@@ -240,7 +255,7 @@
 
           <div class="podium-avatar-wrap">
             <div class="podium-gold-ring"></div>
-            <img class="podium-avatar" src="${player.avatar}" alt="${player.name}">
+            <img class="podium-avatar" src="${player.avatar}" alt="${escapeHtml(player.name)}">
           </div>
 
           <div class="podium-name">${escapeHtml(player.name)}</div>
@@ -259,15 +274,6 @@
       if (note) {
         note.textContent = "Final top 3 pulled automatically from the leaderboard standings.";
       }
-    }
-
-    function escapeHtml(s) {
-      return String(s)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
     }
 
     async function loadTop3(cfg) {
@@ -300,32 +306,34 @@
       }
     }
 
-    function initPersistentCountdown() {
-      let payoutDate = localStorage.getItem("leaderboardPayoutDate");
+    function initCountdownFromConfig(payoutDateString) {
+      const payoutDate = new Date(payoutDateString).getTime();
+      const note = document.getElementById("countdownNote");
 
-      if (!payoutDate) {
-        const date = new Date();
-        date.setDate(date.getDate() + 7);
-        payoutDate = String(date.getTime());
-        localStorage.setItem("leaderboardPayoutDate", payoutDate);
+      function setVal(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
       }
 
-      payoutDate = Number(payoutDate);
+      if (!Number.isFinite(payoutDate)) {
+        setVal("days", "0");
+        setVal("hours", "0");
+        setVal("minutes", "0");
+        setVal("seconds", "0");
+        if (note) note.textContent = "Set finalPayoutDate in config.json to sync this countdown.";
+        return;
+      }
 
       function updateCountdown() {
         const now = Date.now();
         const diff = payoutDate - now;
 
-        const set = (id, value) => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = value;
-        };
-
         if (diff <= 0) {
-          set("days", "0");
-          set("hours", "0");
-          set("minutes", "0");
-          set("seconds", "0");
+          setVal("days", "0");
+          setVal("hours", "0");
+          setVal("minutes", "0");
+          setVal("seconds", "0");
+          if (note) note.textContent = "Payout countdown has ended.";
           return;
         }
 
@@ -334,10 +342,15 @@
         const m = Math.floor((diff / (1000 * 60)) % 60);
         const s = Math.floor((diff / 1000) % 60);
 
-        set("days", d);
-        set("hours", h);
-        set("minutes", m);
-        set("seconds", s);
+        setVal("days", d);
+        setVal("hours", h);
+        setVal("minutes", m);
+        setVal("seconds", s);
+
+        if (note) {
+          const readable = new Date(payoutDate).toLocaleString();
+          note.textContent = `Synced payout date: ${readable}`;
+        }
       }
 
       updateCountdown();
@@ -361,7 +374,7 @@
         y: Math.random() * canvas.height,
         speed: 0.4 + Math.random() * 1.1,
         size: 1 + Math.random() * 2.2,
-        alpha: 0.25 + Math.random() * 0.45,
+        alpha: 0.25 + Math.random() * 0.45
       }));
 
       function draw() {
@@ -388,6 +401,7 @@
 
     function initFloatingNames() {
       const names = ["Leaderboard", "Top 3", "Farewell", "RALF1Q", "Thanks"];
+
       names.forEach((name, i) => {
         const el = document.createElement("div");
         el.className = "floating-name";
@@ -403,7 +417,7 @@
       if (siteName) siteName.textContent = cfg.siteName || "RALF1Q Rewards";
 
       fx.setMode(cfg.season || "winter");
-      initPersistentCountdown();
+      initCountdownFromConfig(cfg.finalPayoutDate);
       initGoldParticles();
       initFloatingNames();
       loadTop3(cfg);
@@ -526,6 +540,12 @@
       color:#e0bf73;
       font-weight:900;
       margin-bottom:10px;
+    }
+
+    .end-countdown-note{
+      margin-top:10px;
+      color:rgba(255,255,255,.62);
+      font-size:13px;
     }
 
     .final-podium-wrap{
