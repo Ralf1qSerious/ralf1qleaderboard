@@ -12,6 +12,8 @@
 
   "countdownEnd": "2026-04-01T00:00:00Z",
 
+  "finalPayoutDate": "2026-03-20T20:00:00Z",
+
   "discordServerId": "1472980727783227440",
 
   "api": {
@@ -70,3 +72,4 @@
 
   "adminPassword": "ralf1q"
 }
+
