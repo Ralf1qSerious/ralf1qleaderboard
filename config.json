@@ -50,10 +50,10 @@
         "bg": "rgba(62,210,135,.14)",
         "border": "rgba(62,210,135,.20)"
       },
-      "title": "RALF1Q 2.40",
-      "price": "1.01",
-      "image": "/assets/images/case-5m4a1v1.png",
-      "url": "https://skinrave.gg/en/cs2/case-opening/5-m4a1-v1"
+      "title": "BUTTERFLY MAGIC",
+      "price": "276.95",
+      "image": "/assets/images/case-butt.png",
+      "url": "https://skinrave.gg/en/cs2/case-opening/butterfly-magic"
     },
     {
       "badge": "NEW",
@@ -72,5 +72,6 @@
 
   "adminPassword": "ralf1q"
 }
+
 
 
